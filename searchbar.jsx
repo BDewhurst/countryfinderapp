@@ -1,8 +1,9 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Image } from 'react-native';
 import { useState, useEffect } from 'react';
 import { searchCountries } from './api';
 
 const SearchBar = () => {
+
     const [searchQuery, setSearchQuery] = useState('');
     const [searchedCountries, setSearchedCountries] = useState([]);
   
@@ -20,9 +21,6 @@ const SearchBar = () => {
       }
     }, [searchQuery]);
   
-    useEffect(() => {
-      console.log(searchedCountries); 
-    }, [searchedCountries]);
   
 
 return (
@@ -34,6 +32,12 @@ return (
     autoCapitalize='none'
     autoCorrect={false}
     onChangeText= {(query) => {handleSearch(query)}}/>
+    {searchedCountries.map(country => (
+    <View key={country.cca2} style={styles.countryContainer}>
+          <Text>{country.name.common}</Text>
+          <Image source={{ uri: country.flags.png }} style={styles.flag} />
+        </View>
+    ))}
     </View>
   )}
 
@@ -45,7 +49,16 @@ const styles = StyleSheet.create({
         borderColor: "#ccc", 
         borderRadius: 8,
         borderWidth: 1,
-    }
+    },
+    countryContainer: {
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    flag: {
+      width: 100,
+      height: 60,
+      resizeMode: 'contain',
+    },
 })
 
 

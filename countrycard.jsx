@@ -7,14 +7,14 @@ const CountryListScreen = () => {
 
 
   useEffect(() => {
-    fetchCountries()
-      .then((data) => {
-        setCountries(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching countries:', error);
-      });
-  }, []);
+      fetchCountries()
+        .then((data) => {
+          setCountries(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching countries:', error);
+        });
+      }, []);
   
   if (countries.length === 0) {
     return null;
