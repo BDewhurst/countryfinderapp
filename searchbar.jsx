@@ -1,13 +1,15 @@
-import { StyleSheet, TextInput, View, Text, Image, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Image,  FlatList, Pressable } from 'react-native';
 import { useState, useEffect } from 'react';
 import { searchCountries } from './api';
+import { useNavigation } from '@react-navigation/native';
 
 const SearchBar = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [searchedCountries, setSearchedCountries] = useState([]);
   
-
+    const { navigate } = useNavigation();
+    
     const handleSearch = (query) => {
       setSearchQuery(query);
     };
@@ -39,12 +41,14 @@ return (
           keyExtractor={(item) => item.cca2}
           numColumns={2} 
           renderItem={({ item }) => (
+            <Pressable onPress={() => {navigate("Country", {item})}}>
             <View key={item.cca2} style={styles.countryContainer}>
               <Text>{item.name.common}</Text>
               <Image source={{ uri: item.flags.png }} style={styles.flag} />
               <Text> Capital : {item.capital}</Text>
               <Text> Region : {item.region}</Text>
             </View>
+            </Pressable>
           )}
         />
     </View>

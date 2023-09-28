@@ -38,7 +38,7 @@ const CountryListScreen = () => {
       keyExtractor={(item) => item.cca2}
       numColumns={2}
       renderItem={({ item }) => (
-        <Pressable onPress={() => {navigate("CountryScreen", {item})}}>
+        <Pressable onPress={() => {navigate("Country", {item})}}>
         <View style={styles.countryContainer}>
           <Image source={{ uri: item.flags.png }} style={styles.flag} />
           <Text style={styles.countryName}>{formatCountryName(item.name.common)}</Text>
