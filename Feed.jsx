@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet} from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, Pressable} from 'react-native';
 import { fetchCountries } from './api'; 
+import { useNavigation } from '@react-navigation/native';
+
 
 const CountryListScreen = () => {
   const [countries, setCountries] = useState([]);
 
+  const { navigate } = useNavigation();
 
   useEffect(() => {
       fetchCountries()
@@ -15,7 +18,15 @@ const CountryListScreen = () => {
           console.error('Error fetching countries:', error);
         });
       }, []);
-  
+      
+      function formatCountryName(countryName) {
+        if (countryName.length > 16) {
+
+          return countryName.substring(0, 16) + '\n' + countryName.substring(16);
+        }
+        return countryName;
+      }
+
   if (countries.length === 0) {
     return null;
   }
@@ -27,10 +38,12 @@ const CountryListScreen = () => {
       keyExtractor={(item) => item.cca2}
       numColumns={2}
       renderItem={({ item }) => (
+        <Pressable onPress={() => {navigate("CountryScreen", {item})}}>
         <View style={styles.countryContainer}>
           <Image source={{ uri: item.flags.png }} style={styles.flag} />
-          <Text>{item.name.common}</Text>
+          <Text style={styles.countryName}>{formatCountryName(item.name.common)}</Text>
         </View>
+        </Pressable>
       )}
     />
   );
@@ -38,20 +51,30 @@ const CountryListScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'grid',
-    justifyContent: 'grid',
-  },
-  countryContainer: {
-    flex: 1,
-    flexDirection: 'column',
     alignItems: 'center',
-    margin: 10,
+    justifyContent: 'center',
+    flexDirection: 'column',
   },
-  flag: {
-    width: 100,
-    height: 60,
-    resizeMode: 'contain',
-    marginBottom: 10,
+    countryContainer: {
+      flex: 1,
+      flexDirection: 'grid',
+      alignItems: 'center',
+      margin: 20, 
+    },
+    countryContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'center',
+      margin: 15, 
+    },
+    flag: {
+      width: 100,
+      height: 100,
+      resizeMode: 'contain',
+      margin: 10,
+  },
+  countryName: {
+    textAlign: 'center',
   },
 });
 

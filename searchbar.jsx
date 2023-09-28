@@ -42,7 +42,7 @@ return (
             <View key={item.cca2} style={styles.countryContainer}>
               <Text>{item.name.common}</Text>
               <Image source={{ uri: item.flags.png }} style={styles.flag} />
-              <Text> Capital: {item.capital}</Text>
+              <Text> Capital : {item.capital}</Text>
               <Text> Region : {item.region}</Text>
             </View>
           )}
@@ -69,6 +69,8 @@ const styles = StyleSheet.create({
       width: 100,
       height: 60,
       resizeMode: 'contain',
+      marginBottom: 10,
+      marginTop: 10,
     },
 })
 
