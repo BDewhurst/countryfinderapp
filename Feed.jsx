@@ -19,13 +19,7 @@ const CountryListScreen = () => {
         });
       }, []);
       
-      function formatCountryName(countryName) {
-        if (countryName.length > 16) {
 
-          return countryName.substring(0, 16) + '\n' + countryName.substring(16);
-        }
-        return countryName;
-      }
 
   if (countries.length === 0) {
     return null;
@@ -48,7 +42,13 @@ const CountryListScreen = () => {
     />
   );
 };
+export function formatCountryName(countryName) {
+  if (countryName.length > 16) {
 
+    return countryName.substring(0, 16) + '\n' + countryName.substring(16);
+  }
+  return countryName;
+}
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -77,6 +77,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
 
 export default CountryListScreen;

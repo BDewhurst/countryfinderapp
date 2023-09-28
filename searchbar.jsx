@@ -2,6 +2,7 @@ import { StyleSheet, TextInput, View, Text, Image,  FlatList, Pressable } from '
 import { useState, useEffect } from 'react';
 import { searchCountries } from './api';
 import { useNavigation } from '@react-navigation/native';
+import { formatCountryName } from './Feed';
 
 const SearchBar = () => {
 
@@ -9,7 +10,7 @@ const SearchBar = () => {
     const [searchedCountries, setSearchedCountries] = useState([]);
   
     const { navigate } = useNavigation();
-    
+
     const handleSearch = (query) => {
       setSearchQuery(query);
     };
@@ -43,7 +44,7 @@ return (
           renderItem={({ item }) => (
             <Pressable onPress={() => {navigate("Country", {item})}}>
             <View key={item.cca2} style={styles.countryContainer}>
-              <Text>{item.name.common}</Text>
+              <Text>{formatCountryName(item.name.common)}</Text>
               <Image source={{ uri: item.flags.png }} style={styles.flag} />
               <Text> Capital : {item.capital}</Text>
               <Text> Region : {item.region}</Text>
@@ -63,18 +64,25 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
     },
-    countryContainer: {
-      flex: 1,
-      flexDirection: 'column',
+    container: {
       alignItems: 'center',
-      margin: 10,
+      justifyContent: 'center',
+      flexDirection: 'column',
     },
-    flag: {
-      width: 100,
-      height: 60,
-      resizeMode: 'contain',
-      marginBottom: 10,
-      marginTop: 10,
+      countryContainer: {
+        flex: 1,
+        flexDirection: 'grid',
+        alignItems: 'center',
+        margin: 20, 
+      },
+      flag: {
+        width: 100,
+        height: 100,
+        resizeMode: 'contain',
+        margin: 10,
+    },
+    countryName: {
+      textAlign: 'center',
     },
 })
 
