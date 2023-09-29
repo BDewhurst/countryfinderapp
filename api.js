@@ -14,3 +14,9 @@ export const searchCountries = (name) => {
         return res.data
     })
 }
+
+export const searchLanguages = (languages) => {
+    return countriesApi.get(`lang/${languages}`).then((res) => {
+        return res.data
+    })
+}
