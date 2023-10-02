@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { searchCountries } from './api';
 import { useNavigation } from '@react-navigation/native';
 import { formatCountryName } from './Feed';
+import useDebounce from './hooks/debounce';
 
 const SearchBar = () => {
 
@@ -11,19 +12,21 @@ const SearchBar = () => {
   
     const { navigate } = useNavigation();
 
+const debouncedSearchValue = useDebounce(searchQuery, 1000)
+
     const handleSearch = (query) => {
       setSearchQuery(query);
     };
   
     useEffect(() => {
-      if (searchQuery) {
-        searchCountries(searchQuery).then((data) => {
+      if (debouncedSearchValue) {
+        searchCountries(debouncedSearchValue).then((data) => {
           setSearchedCountries(data);
         });
       } else {
         setSearchedCountries([]);
       }
-    }, [searchQuery]);
+    }, [debouncedSearchValue]);
   
   
 

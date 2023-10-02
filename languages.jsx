@@ -4,7 +4,7 @@ import { StyleSheet, TextInput, View, Text, Image,  FlatList, Pressable } from '
 import { useState, useEffect } from 'react';
 import { searchLanguages} from './api';
 import { formatCountryName } from './Feed';
-
+import useDebounce from "./hooks/debounce";
 
 export default function Languages() {
     const {navigate} = useNavigation();
@@ -12,19 +12,29 @@ export default function Languages() {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchedCountries, setSearchedCountries] = useState([]);
 
+ 
+    const debouncedSearchValue = useDebounce(searchQuery, 1000)
+
     const handleSearch = (query) => {
+
         setSearchQuery(query);
       };
 
-    useEffect(() => {
-        if (searchQuery) {
-          searchLanguages(searchQuery).then((data) => {
-            setSearchedCountries(data);
-          });
+ 
+
+      useEffect(() => {
+        if (debouncedSearchValue) {
+          searchLanguages(debouncedSearchValue)
+            .then((data) => {
+              setSearchedCountries(data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
         } else {
           setSearchedCountries([]);
         }
-      }, [searchQuery]);
+      }, [debouncedSearchValue]);
     return (
             <View>
             <TextInput 
@@ -33,7 +43,7 @@ export default function Languages() {
             style ={styles.searchBox}
             autoCapitalize='none'
             autoCorrect={false}
-            onChangeText= {(query) => {handleSearch(query)}}/>
+            onChangeText= {(query) => {handleSearch(query)}} />
                 <FlatList
                   data={searchedCountries}
                   contentContainerStyle={styles.container}

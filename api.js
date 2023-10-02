@@ -18,5 +18,8 @@ export const searchCountries = (name) => {
 export const searchLanguages = (languages) => {
     return countriesApi.get(`lang/${languages}`).then((res) => {
         return res.data
-    })
+    }).catch((error) => {
+        console.error("Error fetching languages:", error);
+})
 }
+
